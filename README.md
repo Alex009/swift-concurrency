@@ -37,7 +37,7 @@
     
     [Решение](example5/example5d/race-condition-5d.playground/Contents.swift)
     
-6. привести пример dedlock
+6. привести пример deadlock
 
     [Решение](example6/deadlock.playground/Contents.swift)
 
@@ -47,3 +47,5 @@
     a. рисуем ситуацию 2 потоков. которые работают с объектом User, у которого есть массив адресов с классом Address
     
     b. показать в каких случаях массив будет в стеке, а в каких в куче
+    
+    [Решение в Playground с комментариями](example7/memory1.playground/Contents.swift)
