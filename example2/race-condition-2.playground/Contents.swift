@@ -2,22 +2,39 @@ import UIKit
 
 var result: Int = 0
 
+let counterConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.counter-concurrent-queue", attributes: .concurrent)
+
+let incrementConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.increment-concurrent-queue", attributes: .concurrent)
+let decrementConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.decrement-concurrent-queue", attributes: .concurrent)
+
+let group = DispatchGroup()
+
 func increment() {
-    result = result + 1
+    for _ in 1...100 {
+        counterConcurrentQueue.async(flags: .barrier) {
+            result = result + 1
+        }
+    }
 }
 
 func decrement() {
-    result = result - 1
+    for _ in 1...100 {
+        counterConcurrentQueue.async(flags: .barrier) {
+            result = result - 1
+        }
+    }
 }
 
-let concurrentQueue = DispatchQueue(label: "ru.sergeipanov.first-concurrent-queue", attributes: .concurrent)
-//let secondConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.second-concurrent-queue", attributes: .concurrent)
-
-for _ in 1...100 {
-    concurrentQueue.async(flags: .barrier, execute: increment)
-    concurrentQueue.async(flags: .barrier, execute: decrement)
+incrementConcurrentQueue.async(group: group) {
+    increment()
+}
+decrementConcurrentQueue.async(group: group) {
+    decrement()
 }
 
-print(result)
+group.notify(queue: DispatchQueue.main) {
+    print(result)
+}
 
 RunLoop().run()
+

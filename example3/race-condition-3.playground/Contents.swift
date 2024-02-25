@@ -2,33 +2,39 @@ import UIKit
 
 var result: Int = 0
 
-let semaphore = DispatchSemaphore(value: 1)
-
-func increment() {
-    semaphore.wait()
-    
-    result = result + 1
-    
-    semaphore.signal()
-}
-
-func decrement() {
-    semaphore.wait()
-    
-    result = result - 1
-    
-    semaphore.signal()
-}
-
-let firstConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.first-concurrent-queue", attributes: .concurrent)
-let secondConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.second-concurrent-queue", attributes: .concurrent)
+let incrementConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.increment-concurrent-queue", attributes: .concurrent)
+let decrementConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.decrement-concurrent-queue", attributes: .concurrent)
 
 let group = DispatchGroup()
 
-for _ in 1...100 {
-    firstConcurrentQueue.async(group: group, execute: increment)
-    secondConcurrentQueue.async(group: group, execute: decrement)
+let semaphore = DispatchSemaphore(value: 1)
+
+func increment() {
+    for _ in 1...100 {
+        incrementConcurrentQueue.async(group: group) {
+            semaphore.wait()
+            
+            result = result + 1
+            
+            semaphore.signal()
+        }
+    }
 }
+
+func decrement() {
+    for _ in 1...100 {
+        decrementConcurrentQueue.async(group: group) {
+            semaphore.wait()
+            
+            result = result - 1
+            
+            semaphore.signal()
+        }
+    }
+}
+
+increment()
+decrement()
 
 group.notify(queue: DispatchQueue.main) {
     print(result)
