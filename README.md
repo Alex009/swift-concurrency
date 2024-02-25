@@ -29,6 +29,8 @@
     
     [Решение с барьером](example5/example5b/race-condition-5b.playground/Contents.swift)
     
+    [Решение с семафором](example5/example5с/race-condition-5с.playground/Contents.swift)
+    
     c. добавляем 5 пример - считаем ровно тоже самое без многопоточки вообще. выводим последнее значение и время
 6. привести пример dedlock
 

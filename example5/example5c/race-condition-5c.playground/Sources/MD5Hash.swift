@@ -1,10 +1,3 @@
-//
-//  MD5Hash.swift
-//  
-//
-//  Created by Sergei Panov on 25.02.2024.
-//
-
 import Foundation
 import CryptoKit
 
@@ -20,3 +13,4 @@ public func generateMD5Hash(strings: [String]) -> String {
         return ""
     }
 }
+
