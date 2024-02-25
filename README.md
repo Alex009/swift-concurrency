@@ -27,6 +27,8 @@
     
     [Решение без синхронизации](example5/example5a/race-condition-5a.playground/Contents.swift)
     
+    [Решение с барьером](example5/example5b/race-condition-5b.playground/Contents.swift)
+    
     c. добавляем 5 пример - считаем ровно тоже самое без многопоточки вообще. выводим последнее значение и время
 6. привести пример dedlock
 

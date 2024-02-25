@@ -23,11 +23,15 @@ func decrement() {
 let firstConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.first-concurrent-queue", attributes: .concurrent)
 let secondConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.second-concurrent-queue", attributes: .concurrent)
 
+let group = DispatchGroup()
+
 for _ in 1...100 {
-    firstConcurrentQueue.async(execute: increment)
-    secondConcurrentQueue.async(execute: decrement)
+    firstConcurrentQueue.async(group: group, execute: increment)
+    secondConcurrentQueue.async(group: group, execute: decrement)
 }
 
-print(result)
+group.notify(queue: DispatchQueue.main) {
+    print(result)
+}
 
 RunLoop().run()

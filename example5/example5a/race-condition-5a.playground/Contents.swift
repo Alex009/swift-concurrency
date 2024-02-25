@@ -16,6 +16,8 @@ let concurrentQueue8 = DispatchQueue(label: "ru.sergeipanov.concurrent-queue-8",
 let concurrentQueue9 = DispatchQueue(label: "ru.sergeipanov.concurrent-queue-9", attributes: .concurrent)
 let concurrentQueue10 = DispatchQueue(label: "ru.sergeipanov.concurrent-queue-10", attributes: .concurrent)
 
+let group = DispatchGroup()
+
 func addNewItem() {
     let hash = generateMD5Hash(strings: result)
     
@@ -25,21 +27,23 @@ func addNewItem() {
 }
 
 for _ in 1...100 {
-    concurrentQueue1.async(execute: addNewItem)
-    concurrentQueue2.async(execute: addNewItem)
-    concurrentQueue3.async(execute: addNewItem)
-    concurrentQueue4.async(execute: addNewItem)
-    concurrentQueue5.async(execute: addNewItem)
-    concurrentQueue6.async(execute: addNewItem)
-    concurrentQueue7.async(execute: addNewItem)
-    concurrentQueue8.async(execute: addNewItem)
-    concurrentQueue9.async(execute: addNewItem)
-    concurrentQueue10.async(execute: addNewItem)
+    concurrentQueue1.async(group: group, execute: addNewItem)
+    concurrentQueue2.async(group: group, execute: addNewItem)
+    concurrentQueue3.async(group: group, execute: addNewItem)
+    concurrentQueue4.async(group: group, execute: addNewItem)
+    concurrentQueue5.async(group: group, execute: addNewItem)
+    concurrentQueue6.async(group: group, execute: addNewItem)
+    concurrentQueue7.async(group: group, execute: addNewItem)
+    concurrentQueue8.async(group: group, execute: addNewItem)
+    concurrentQueue9.async(group: group, execute: addNewItem)
+    concurrentQueue10.async(group: group, execute: addNewItem)
 }
 
-print("Result: \(result.last ?? "")")
-let diff = CFAbsoluteTimeGetCurrent() - start
-print("Time spent: \(diff) seconds")
+group.notify(queue: DispatchQueue.main) {
+    print("Result: \(result.last ?? "")")
+    let diff = CFAbsoluteTimeGetCurrent() - start
+    print("Time spent: \(diff) seconds")
+}
 
 RunLoop().run()
 
