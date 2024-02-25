@@ -7,7 +7,7 @@
 
 import Foundation
 
-func generateMD5Hash(strings: [String]) -> String {
+public func generateMD5Hash(strings: [String]) -> String {
     let concatenatedString = strings.joined()
     
     if let data = concatenatedString.data(using: .utf8) {
