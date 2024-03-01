@@ -29,7 +29,9 @@
     
     [Решение с семафором](example5/example5с/race-condition-5с.playground/Contents.swift)
     
-    С атомиками не совсем понял, [библиотека](https://github.com/apple/swift-atomics) не поддерживает работу с массивами, а реализация для строчек все равно потребует семафоров или NSLock
+    [Решение с атомиками](example5/example5e/race-condition-5e/race-condition-5e/ContentView.swift 
+)
+    (Не работает)
     
     c. добавляем 5 пример - считаем ровно тоже самое без многопоточки вообще. выводим последнее значение и время
     
