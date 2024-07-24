@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:swift-atomics">
+      location = "group:swift-atomics/Xcode/Atomics.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:race-condition-4.playground">

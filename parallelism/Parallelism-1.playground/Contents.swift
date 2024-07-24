@@ -1,6 +1,5 @@
 import Foundation
 
-var result: Int = 0
 var startTime: Date?
 
 let numberOfThreads = 100
@@ -28,7 +27,6 @@ func startCalculation() {
         }
     }
     
-    print(result)
     if let startTime = startTime {
         let calcTime = Date.now.timeIntervalSince(startTime)
         print("calculationTime = \(calcTime) seconds")
@@ -36,11 +34,13 @@ func startCalculation() {
 }
 
 func threadFunction(arg: UnsafeMutableRawPointer?) -> UnsafeMutableRawPointer? {
+    var result: Int = 0
     for i in 1...1_000 {
         for j in 1...1_000 {
             result += (i + j) / 2
         }
     }
+    print(result)
     
     return nil
 }
@@ -48,3 +48,6 @@ func threadFunction(arg: UnsafeMutableRawPointer?) -> UnsafeMutableRawPointer? {
 startCalculation()
 
 RunLoop().run()
+
+// review:
+// выводить нужно результат выполнения каждого потока. иначе не будет наглядного сравнения.

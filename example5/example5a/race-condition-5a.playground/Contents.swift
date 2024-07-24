@@ -33,3 +33,5 @@ group.notify(queue: DispatchQueue.main) {
 
 RunLoop().run()
 
+// review:
+// верно. хотя строки 24-26 странные

@@ -22,3 +22,6 @@ let diff = CFAbsoluteTimeGetCurrent() - start
 print("Time spent: \(diff) seconds")
 
 RunLoop().run()
+
+// review:
+// верно

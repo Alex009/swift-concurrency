@@ -9,18 +9,10 @@ import SwiftUI
 import Atomics
 
 class AtomicArray: AtomicReference {
-    private(set) var value: [String]
+    let value: [String]
     
     init(value: [String] = []) {
         self.value = value
-    }
-    
-    func append(_ newValue: String) {
-        var currentValue = value
-        
-        currentValue.append(newValue)
-        
-        value = currentValue
     }
 }
 
@@ -52,13 +44,25 @@ struct ContentView: View {
         func addNewItem() {
             for _ in 1...100 {
                 concurrentQueue.async(group: group) {
-                    let currentResult = result.load(ordering: .relaxed)
-                    let hash = generateMD5Hash(
-                        strings: currentResult.value
-                    )
-                    
-                    currentResult.append(hash)
-                    result.store(currentResult, ordering: .relaxed)
+                    // пока мы не сможем корректно добавить новый результат - будем повторять попытки расчетов
+                    while (true) {
+                        let currentResult = result.load(ordering: .relaxed)
+                        let currentArray = currentResult.value
+                        
+                        let hash = generateMD5Hash(strings: currentArray)
+                        
+                        let newArray = currentArray + [hash]
+                        
+                        let exchangeResult = result.compareExchange(
+                            expected: currentResult,
+                            desired: AtomicArray(value: newArray),
+                            ordering: .relaxed
+                        )
+                        // если мы успешно добавили результат - прекращаем попытки
+                        if exchangeResult.exchanged {
+                            break
+                        }
+                    }
                 }
             }
         }
@@ -78,3 +82,7 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
+// review:
+// я внес исправления в код. правильное использование atomicReference сводится к попыткам заменить текущее значение атомарно, сверяясь с тем значением, на основании которого мы считали новое. Если не удалось заменить - повторяем расчет уже с новым значением.
+// надо с атомиками лучше разобраться однако

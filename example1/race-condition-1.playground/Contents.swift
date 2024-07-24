@@ -8,16 +8,16 @@ let decrementConcurrentQueue = DispatchQueue(label: "ru.sergeipanov.decrement-co
 let group = DispatchGroup()
 
 func increment() {
-    for _ in 1...100 {
-        incrementConcurrentQueue.async(group: group) {
+    incrementConcurrentQueue.async(group: group) {
+        for _ in 1...100 {
             result = result + 1
         }
     }
 }
 
 func decrement() {
-    for _ in 1...100 {
-        decrementConcurrentQueue.async(group: group) {
+    decrementConcurrentQueue.async(group: group) {
+        for _ in 1...100 {
             result = result - 1
         }
     }
@@ -31,3 +31,8 @@ group.notify(queue: DispatchQueue.main) {
 }
 
 RunLoop().run()
+
+
+// review:
+// ситуация гонки тут есть, да. но можно было сделать всё проще, без очередей и групп. по сути надо просто два потока которые внутри будут содержать цикл. не как щас - цикл который создает множество задач в две очереди. а именно запуск просто двух потоков. в целом можно даже в текущем варианте цикл внутрь задач перенести и будет таже проблема гонки, без множества тасок
+// но в общем да, задача решена.

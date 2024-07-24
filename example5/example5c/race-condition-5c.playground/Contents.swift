@@ -37,3 +37,6 @@ group.notify(queue: DispatchQueue.main) {
 }
 
 RunLoop().run()
+
+// review:
+// верно

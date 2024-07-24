@@ -50,3 +50,6 @@ group.notify(queue: DispatchQueue.main) {
 }
 
 RunLoop().run()
+
+// review:
+// пример дедлока приведен верный.
